@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import React, { useEffect, useState } from 'react';
 import shortid from "shortid";
 
-class App extends React.Componnet {
+class App extends React.Component {
   state = {
     books: [
       {
@@ -45,7 +45,7 @@ class App extends React.Componnet {
     return (
       <>
         <h1>Hello to books app!</h1>
-        <BooksList books={this.state.books} removeBook={this.removeBooks} />
+        <BooksList books={this.state.books} removeBook={this.removeBook} />
         <BooksForm addBook={this.addBook} />
       </>
     );

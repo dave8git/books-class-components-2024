@@ -1,27 +1,41 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addBookRequest } from "../../redux/booksRedux.js";
+import React from "react";
 
-const BooksForm = () => {
-
-    const dispatch = useDispatch(); 
-
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-
-    const handleSubmit = e => {
-        e.preventDefault(); 
-        dispatch(addBookRequest({title, author})); // funkcja handleSubmit ma dostęp do zakresu wyżej i można przekazać to do bookRedux tam do addBookRequest(newBook)
-        setTitle('');
-        setAuthor('');
+class BooksForm extends React.Component {
+    state = {
+        title: '',
+        author: ''
     }
-    return (
-        <form onSubmit={handleSubmit}>
-            Title: <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
-            Author: <input type="text" value={author} onChange={e => setAuthor(e.target.value)}/>
-            <button>Add books</button>
-        </form>
-    );
+
+    handleSubmit = e => {
+        e.preventDefault(); 
+        this.props.addBook({title: this.state.title, author: this.state.author}); 
+        this.setState({ ...this.state, title: '' }); // w komponentach klasowych trzeba zawsze dodać wszystkie właściwości (czyli tutaj author i title) stąd zawsze destrukturyzacja stanu przy dodawaniu czegoś
+        this.setState({ ...this.state, author: ''});
+    };
+
+    setTitle = value => {
+        this.setState({ ...this.state, title: value });
+    }
+
+    setAuthor = value => {
+        this.setState({ ...this.state, author: value });
+    }
+    render() {
+        const { handleSubmit, setTitle, setAuthor } = this;
+        const { title, author } = this.state;
+
+        return (
+            <form onSubmit={handleSubmit}>
+                Title: <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
+                Author: <input type="text" value={author} onChange={e => setAuthor(e.target.value)}/>
+                <button>Add books</button>
+            </form>
+        );
+    }
+   
 };
 
 export default BooksForm;
